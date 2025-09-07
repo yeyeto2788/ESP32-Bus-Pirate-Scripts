@@ -1,5 +1,5 @@
 #
-# Sniff and log all WiFi packets with timestamp.
+# Sniff and log all bluetooth packets with timestamp.
 # This script records all packets received during the defined duration.
 # The file will be saved in the current directory
 #
