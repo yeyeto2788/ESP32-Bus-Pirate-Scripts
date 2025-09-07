@@ -14,9 +14,11 @@ A collection of **easy-to-use** Python scripts to control the **ESP32 Bus Pirate
 | `bluetooth_sniff_log.py` | Perdiocally sniff packets and logs them timestamped to a file |
 | `uart_read_log.py` | Logs all UART data receiveid into a file |
 | `i2c_dump_eeprom_hex.py` | Dump the content of an I2C EEPROM in hex format to a file |
-| `i2c_dump_eeprom_hex.py` | Dump the content of an I2C EEPROM in raw format to a file |
+| `i2c_dump_eeprom_bin.py` | Dump the content of an I2C EEPROM in raw bin format to a file |
 | `i2c_identify_all.py` | Detects all I2C devices and attempts to identify them |
 | `i2c_glitch_all.py` | Detects all I2C devices and attempts to glitch them |
+| `spi_dump_flash_hex.py` | Dump the content of an SPI Flash in hex format to a file |
+| `spi_dump_flash_bin.py` | Dump the content of an SPI Flash in raw bin format to a file |
 | `led_custom_animation.py` | Custom LED animation using led commands |
 | `infrared_devicebgone_loop.py` | Sends 'Device-B-Gone' IR commands in loop |
 | `dio_wait_and_pulse.py`  | Wait for a defined pin to go LOW to send a pulse |
