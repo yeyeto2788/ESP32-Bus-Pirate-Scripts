@@ -139,7 +139,43 @@ class BusPirate:
                 time.sleep(0.05)
 
         return lines
-    
+        
+    def receive_raw(self, silence_timeout: float = 0.5, max_bytes: int | None = None) -> bytes:
+        """
+        Reçoit des octets bruts jusqu'à un silence de 'silence_timeout' secondes.
+        - silence_timeout : durée (s) sans nouveau byte avant d'arrêter.
+        - max_bytes       : limite dure optionnelle pour éviter d'avaler trop de données.
+        Retourne: bytes (flux binaire reçu).
+        """
+        import time
+
+        buf = bytearray()
+        last_data_time = time.time()
+
+        # Assure un timeout non bloquant côté pySerial
+        old_timeout = self.serial.timeout
+        if old_timeout is None or old_timeout > silence_timeout:
+            self.serial.timeout = min(0.1, silence_timeout)
+
+        try:
+            while True:
+                # Lire ce qui est dispo; si rien, read() retourne b'' après 'timeout'
+                chunk = self.serial.read(self.serial.in_waiting or 1024)
+                if chunk:
+                    buf += chunk
+                    last_data_time = time.time()
+                    if max_bytes is not None and len(buf) >= max_bytes:
+                        return bytes(buf[:max_bytes])
+                else:
+                    # Pas de nouveau byte; vérifier le silence cumulé
+                    if time.time() - last_data_time > silence_timeout:
+                        break
+        finally:
+            # Restaurer le timeout précédent
+            self.serial.timeout = old_timeout
+
+        return bytes(buf)
+
     def clear_echoes(self, lines: int = 1):
         """
         Clear echoed lines from the Bus Pirate.
