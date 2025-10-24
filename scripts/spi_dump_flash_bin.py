@@ -3,9 +3,10 @@
 # The file will be saved in the current directory
 #
 
-from bus_pirate.bus_pirate import BusPirate
 import os
 import time
+
+from bus_pirate.bus_pirate import BusPirate
 
 # End markers for parsing
 END_MARKER = b"=== SPI Flash Shell ==="

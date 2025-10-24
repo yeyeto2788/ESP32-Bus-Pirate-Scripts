@@ -5,9 +5,10 @@
 #
 
 
-from bus_pirate.bus_pirate import BusPirate
-import time
 import os
+import time
+
+from bus_pirate.bus_pirate import BusPirate
 
 DURATION = 600  # Duration of the logging in seconds
 

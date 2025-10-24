@@ -3,9 +3,10 @@
 # The file will be saved in the current directory
 #
 
-from bus_pirate.bus_pirate import BusPirate
 import os
 import time
+
+from bus_pirate.bus_pirate import BusPirate
 
 # Connect to the Bus Pirate
 bp = BusPirate.auto_connect()

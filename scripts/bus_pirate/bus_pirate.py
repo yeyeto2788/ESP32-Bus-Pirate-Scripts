@@ -1,5 +1,8 @@
-import serial
+from __future__ import annotations
+
 import time
+
+import serial
 import serial.tools.list_ports
 
 
@@ -20,19 +23,20 @@ class BusPirate:
         Try to automatically detect and connect to the Bus Pirate.
         """
         ports = serial.tools.list_ports.comports()
-        for p in ports:
-            if "usb" in p.device.lower() or "tty" in p.device.lower():
+        for port in ports:
+            if "usb" in port.device.lower() or "tty" in port.device.lower():
                 try:
-                    ser = serial.Serial(p.device, baudrate=baudrate, timeout=timeout)
+                    ser = serial.Serial(port.device, baudrate=baudrate, timeout=timeout)
                     ser.write(b"\n")
                     response = ser.readline()
                     if response:
                         ser.close()
-                        return cls(p.device, baudrate, timeout)
+                        return cls(port.device, baudrate, timeout)
                 except Exception:
                     pass
 
-        raise RuntimeError("No ESP232 Bus Pirate found.")
+        msg = "No ESP232 Bus Pirate found."
+        raise RuntimeError(msg)
 
     def start(self, wake_attempts: int = 10):
         """

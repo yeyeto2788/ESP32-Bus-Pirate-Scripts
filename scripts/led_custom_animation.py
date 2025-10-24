@@ -3,8 +3,9 @@
 # This example uses a moving light effect with a trailing tail.
 #
 
-from bus_pirate.bus_pirate import BusPirate
 import time
+
+from bus_pirate.bus_pirate import BusPirate
 
 ##################################################
 #                                                 #
@@ -30,7 +31,7 @@ bp.wait()
 print(f"Running snake animation with {LED_COUNT} LEDs...")
 
 # Run animation
-for cycle in range(CYCLES):
+for _cycle in range(CYCLES):
     # Forward
     for index in range(LED_COUNT):
         bp.send("reset")

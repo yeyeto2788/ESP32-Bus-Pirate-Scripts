@@ -4,10 +4,11 @@
 # The file will be saved in the current directory
 #
 
-from bus_pirate.bus_pirate import BusPirate
-from bus_pirate.constants import EEPROM_TYPES
 import os
 import time
+
+from bus_pirate.bus_pirate import BusPirate
+from bus_pirate.constants import EEPROM_TYPES
 
 ###########################################
 #                                           #
