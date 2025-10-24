@@ -3,12 +3,11 @@
 # This script records all packets received during the defined duration.
 # The file will be saved in the current directory
 #
-
-duration = 600  # Duration of the sniffing in seconds
-
 from bus_pirate.bus_pirate import BusPirate
 import time
 import os
+
+DURATION = 600  # Duration of the sniffing in seconds
 
 # Connect to the Bus Pirate
 bp = BusPirate.auto_connect()
@@ -26,12 +25,12 @@ filepath = os.path.join(os.getcwd(), filename)
 bp.send("sniff")
 bp.wait()
 bp.clear_echoes(2)
-print("Sniffing started... Logging for", duration, "seconds.")
+print("Sniffing started... Logging for", DURATION, "seconds.")
 
 # Logging loop
 start_time = time.time()
 with open(filepath, "a") as f:
-    while time.time() - start_time < duration:
+    while time.time() - start_time < DURATION:
         lines = bp.receive(skip=0)
         if lines:
             log_time = time.strftime("%Y-%m-%d %H:%M:%S")

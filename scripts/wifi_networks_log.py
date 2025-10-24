@@ -1,15 +1,15 @@
-# 
+#
 # Scan and log all WiFi networks found in a file with timestamp.
-# Please provide the "duration" variable below.
+# Please provide the "DURATION" variable below.
 # The file will be saved in the current directory.
 #
 
-duration = 600 # Duration of the logging in seconds
 
 from bus_pirate.bus_pirate import BusPirate
-from bus_pirate.helper import Helper
 import time
 import os
+
+DURATION = 600  # Duration of the logging in seconds
 
 # Search and connect to the Bus Pirate
 bp = BusPirate.auto_connect()
@@ -27,7 +27,7 @@ filepath = os.path.join(os.getcwd(), filename)
 
 # Logging start
 start_time = time.time()
-while time.time() - start_time < duration:
+while time.time() - start_time < DURATION:
     # Scanner
     bp.send("scan")
     print("Scanning WiFi networks, it may take few seconds...")

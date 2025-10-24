@@ -1,4 +1,4 @@
-# 
+#
 # Scan and send deauth to all WiFi networks found
 #
 
@@ -20,7 +20,7 @@ print("Scanning WiFi networks, it may take few seconds...")
 bp.wait(10)
 
 # Extract SSIDs from results
-results = bp.receive(skip=2) # Skip the first two lines (echo and header)
+results = bp.receive(skip=2)  # Skip the first two lines (echo and header)
 ssids = Helper.extractSsidsFromList(results)
 print("Found SSIDs: ", ssids)
 

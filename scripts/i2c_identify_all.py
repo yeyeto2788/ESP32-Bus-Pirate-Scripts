@@ -1,4 +1,4 @@
-# 
+#
 # Scan and identify all I2C devices on the bus
 #
 
@@ -16,7 +16,7 @@ bp.change_mode("I2C")
 bp.send("scan")
 print("Scanning I2C bus, it may take few seconds...")
 bp.wait(2)
-results = bp.receive(skip=1) # echo
+results = bp.receive(skip=1)  # echo
 
 # Extract addresses from results
 addr_list = Helper.extractHexFromList(results)

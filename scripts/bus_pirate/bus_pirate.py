@@ -2,10 +2,12 @@ import serial
 import time
 import serial.tools.list_ports
 
+
 class BusPirate:
     """
     Class to interact with the ESP32 Bus Pirate via serial interface.
     """
+
     def __init__(self, port: str, baudrate: int = 115200, timeout: float = 1.0):
         self.port = port
         self.baudrate = baudrate
@@ -22,7 +24,7 @@ class BusPirate:
             if "usb" in p.device.lower() or "tty" in p.device.lower():
                 try:
                     ser = serial.Serial(p.device, baudrate=baudrate, timeout=timeout)
-                    ser.write(b'\n')
+                    ser.write(b"\n")
                     response = ser.readline()
                     if response:
                         ser.close()
@@ -31,14 +33,14 @@ class BusPirate:
                     pass
 
         raise RuntimeError("No ESP232 Bus Pirate found.")
-    
+
     def start(self, wake_attempts: int = 10):
         """
         Wake up the Bus Pirate and clear any residual data in the buffer.
         - wake_attempts: number of newline attempts to wake the Bus Pirate
         """
         self.flush()
-        
+
         # In case the Bus Pirate is in a mode/shell
         self.send("n")
         self.wait()
@@ -48,21 +50,20 @@ class BusPirate:
         # Send newlines to escape a mode config or other cmd config
         for _ in range(wake_attempts):
             self.serial.write(b"\n")
-        
+
         self.serial.flush()
         self.serial.timeout = 0.1
-        responses = []
-    
+
     def change_mode(self, mode: str):
         """
         Change the Bus Pirate mode.
         - mode string: "I2C", "SPI", "UART", etc.
         """
         self.send("m " + mode.lower())
-        self.send("\n" * 10) # select the default configuration
+        self.send("\n" * 10)  # select the default configuration
         self.wait()
         self.flush()
-    
+
     def flush(self):
         """
         Clear the input and output buffers.
@@ -75,7 +76,7 @@ class BusPirate:
             line = self.serial.readline()
             if not line:
                 break
-   
+
     def wait(self, delay: float = 0.3):
         """
         Wait for a period to allow the Bus Pirate to process commands.
@@ -91,7 +92,6 @@ class BusPirate:
         if not data.endswith("\n"):
             data += "\n"
         self.serial.write(data.encode("utf-8"))
-
 
     def receive(self, skip: int = 1, timeout: float = 0.5) -> list[str]:
         """
@@ -115,7 +115,6 @@ class BusPirate:
 
         return result[0:-1] if result and result[-1].endswith(">") else result
 
-    
     def receive_all(self, silence_timeout: float = 0.5) -> list[str]:
         """
         Receive all data from the Bus Pirate until a period of silence.
@@ -139,8 +138,10 @@ class BusPirate:
                 time.sleep(0.05)
 
         return lines
-        
-    def receive_raw(self, silence_timeout: float = 0.5, max_bytes: int | None = None) -> bytes:
+
+    def receive_raw(
+        self, silence_timeout: float = 0.5, max_bytes: int | None = None
+    ) -> bytes:
         """
         Reçoit des octets bruts jusqu'à un silence de 'silence_timeout' secondes.
         - silence_timeout : durée (s) sans nouveau byte avant d'arrêter.
@@ -183,7 +184,7 @@ class BusPirate:
         """
         for _ in range(lines):
             self.serial.readline()
-    
+
     def stop(self):
         """
         Close the bus pirate connection.

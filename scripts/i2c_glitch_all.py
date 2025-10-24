@@ -1,4 +1,4 @@
-# 
+#
 # Glitch all I2C devices on the bus
 #
 
@@ -18,7 +18,7 @@ bp.change_mode("I2C")
 print("Scanning I2C bus, it may take few seconds...")
 bp.send("scan")
 bp.wait(2)
-results = bp.receive(skip=2) # Skip the first two lines (echo and header)
+results = bp.receive(skip=2)  # Skip the first two lines (echo and header)
 
 # Extract addresses from results
 addr_list = Helper.extractHexFromList(results)

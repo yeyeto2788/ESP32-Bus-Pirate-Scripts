@@ -4,11 +4,11 @@
 # The file will be saved in the current directory.
 #
 
-duration = 600  # Duration of the logging in seconds
-
 from bus_pirate.bus_pirate import BusPirate
 import time
 import os
+
+DURATION = 600  # Duration of the logging in seconds
 
 # Connect to the Bus Pirate
 bp = BusPirate.auto_connect()
@@ -26,12 +26,12 @@ filepath = os.path.join(os.getcwd(), filename)
 bp.send("read")
 bp.wait()
 bp.clear_echoes(2)
-print("UART read started... Logging for", duration, "seconds.")
+print("UART read started... Logging for", DURATION, "seconds.")
 
 # Logging loop
 start_time = time.time()
 with open(filepath, "a") as f:
-    while time.time() - start_time < duration:
+    while time.time() - start_time < DURATION:
         lines = bp.receive(skip=0)
         if lines:
             for line in lines:

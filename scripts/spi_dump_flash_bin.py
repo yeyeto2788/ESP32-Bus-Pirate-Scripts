@@ -1,10 +1,11 @@
-# 
+#
 # Dump the contents of an SPI NOR FLASH in a file (bin format)
 # The file will be saved in the current directory
 #
 
 from bus_pirate.bus_pirate import BusPirate
-import os, time
+import os
+import time
 
 # End markers for parsing
 END_MARKER = b"=== SPI Flash Shell ==="
@@ -13,7 +14,7 @@ END_MARKER = b"=== SPI Flash Shell ==="
 bp = BusPirate.auto_connect()
 bp.start()
 
-bp.send("9") # quit flash shell in case already in it
+bp.send("9")  # quit flash shell in case already in it
 bp.wait()
 bp.receive()  # Clear echoes
 
@@ -26,7 +27,7 @@ bp.wait()
 bp.send("8")  # 8 is the dump raw flash index
 bp.wait()
 bp.receive_all(1)  # Clear shell echoes
-bp.send("y") # confirm
+bp.send("y")  # confirm
 bp.wait()
 bp.clear_echoes(1)
 

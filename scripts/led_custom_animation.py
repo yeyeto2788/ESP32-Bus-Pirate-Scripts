@@ -3,22 +3,22 @@
 # This example uses a moving light effect with a trailing tail.
 #
 
-from  bus_pirate.bus_pirate import BusPirate
+from bus_pirate.bus_pirate import BusPirate
 import time
- 
- ##################################################
+
+##################################################
 #                                                 #
 #            Animation parameters                 #
 #                                                 #
- #################################################
-led_count = 8                 # Total number of LEDs
-head_color = "blue"           # Head color
-tail_color = "white"          # Tail color
-delay = 0.1                   # Delay between each frame (in seconds)
-cycles = 3                    # How many times to go back and forth
+#################################################
+LED_COUNT = 8  # Total number of LEDs
+HEAD_COLOR = "blue"  # Head color
+TAIL_COLOR = "white"  # Tail color
+DELAY = 0.1  # Delay between each frame (in seconds)
+CYCLES = 3  # How many times to go back and forth
 ##################################################
 
-# Connect to Bus Pirate 
+# Connect to Bus Pirate
 bp = BusPirate.auto_connect()
 bp.start()
 
@@ -27,27 +27,27 @@ bp.change_mode("led")
 bp.send("reset")
 bp.wait()
 
-print(f"Running snake animation with {led_count} LEDs...")
+print(f"Running snake animation with {LED_COUNT} LEDs...")
 
 # Run animation
-for cycle in range(cycles):
+for cycle in range(CYCLES):
     # Forward
-    for i in range(led_count):
+    for index in range(LED_COUNT):
         bp.send("reset")
-        if i > 0:
-            bp.send(f"set {i-1} {tail_color}")
-        bp.send(f"set {i} {head_color}")
+        if index > 0:
+            bp.send(f"set {index - 1} {TAIL_COLOR}")
+        bp.send(f"set {index} {HEAD_COLOR}")
         bp.wait()
-        time.sleep(delay)
+        time.sleep(DELAY)
 
     # Backward
-    for i in reversed(range(led_count)):
+    for index in reversed(range(LED_COUNT)):
         bp.send("reset")
-        if i < led_count - 1:
-            bp.send(f"set {i+1} {tail_color}")
-        bp.send(f"set {i} {head_color}")
+        if index < LED_COUNT - 1:
+            bp.send(f"set {index + 1} {TAIL_COLOR}")
+        bp.send(f"set {index} {HEAD_COLOR}")
         bp.wait()
-        time.sleep(delay)
+        time.sleep(DELAY)
 
 # Cleanup
 bp.send("reset")

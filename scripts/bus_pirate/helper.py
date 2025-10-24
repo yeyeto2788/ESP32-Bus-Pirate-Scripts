@@ -1,5 +1,6 @@
 import re
 
+
 class Helper:
     """
     Helper class with static methods for data extraction and manipulation.

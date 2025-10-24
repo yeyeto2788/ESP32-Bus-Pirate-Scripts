@@ -1,16 +1,17 @@
-# 
+#
 # Dump the contents of an SPI NOR FLASH in a file (hex/ascii format)
 # The file will be saved in the current directory
 #
 
 from bus_pirate.bus_pirate import BusPirate
-import os, time
+import os
+import time
 
 # Connect to the Bus Pirate
 bp = BusPirate.auto_connect()
 bp.start()
 
-bp.send("9") # quit flash shell in case already in it
+bp.send("9")  # quit flash shell in case already in it
 bp.wait()
 bp.receive()  # Clear echoes
 
