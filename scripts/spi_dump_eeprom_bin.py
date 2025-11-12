@@ -6,9 +6,27 @@
 
 import os
 import time
+from enum import Enum
 
 from bus_pirate.bus_pirate import BusPirate
-from bus_pirate.constants import EEPROM_TYPES
+
+
+class EEPROM_TYPES(Enum):
+    EEPROM_25X010 = 1
+    EEPROM_25X020 = 2
+    EEPROM_25X040 = 3
+    EEPROM_25X080 = 4
+    EEPROM_25X160 = 5
+    EEPROM_25X320 = 6
+    EEPROM_25X640 = 7
+    EEPROM_25X128 = 8
+    EEPROM_25X256 = 9
+    EEPROM_25X512 = 10
+    EEPROM_25X1024 = 11
+    EEPROM_25XM01 = 12
+    EEPROM_25XM02 = 13
+    EEPROM_25XM04 = 14
+
 
 ###########################################
 #                                           #

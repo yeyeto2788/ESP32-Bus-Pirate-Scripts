@@ -81,7 +81,6 @@ scripts/
 │
 ├── bus_pirate/        # Bus Pirate class
 │   ├── bus_pirate.py
-|   ├── constants.py
 │   └── helper.py
 │
 ├── wifi_script_definition.py

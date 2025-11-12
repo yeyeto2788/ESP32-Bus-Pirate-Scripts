@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import time
 
 import serial
@@ -24,7 +25,8 @@ class BusPirate:
         """
         ports = serial.tools.list_ports.comports()
         for port in ports:
-            if "usb" in port.device.lower() or "tty" in port.device.lower():
+            is_windows_port = True if re.match("[COM+\d]", port.device) is not None else False
+            if "usb" in port.device.lower() or "tty" in port.device.lower() or is_windows_port:
                 try:
                     ser = serial.Serial(port.device, baudrate=baudrate, timeout=timeout)
                     ser.write(b"\n")
@@ -32,7 +34,8 @@ class BusPirate:
                     if response:
                         ser.close()
                         return cls(port.device, baudrate, timeout)
-                except Exception:
+                except Exception as exec_error:
+                    print(exec_error)
                     pass
 
         msg = "No ESP232 Bus Pirate found."
