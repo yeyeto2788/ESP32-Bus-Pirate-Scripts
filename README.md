@@ -78,17 +78,12 @@ Additional `Helper` class to parse and manipulate response from the ESP32 Bus Pi
 
 ```
 scripts/
-│
 ├── bus_pirate/        # Bus Pirate class
 │   ├── bus_pirate.py
 │   └── helper.py
-│
-├── wifi_script_definition.py
-│
-├── bluetooth_script_definiton.py
-│
-├── ...
-
+├── bluetooth_sniff_log.py
+├── dio_wait_and_pulse.py
+└── ...
 ```
 
 
