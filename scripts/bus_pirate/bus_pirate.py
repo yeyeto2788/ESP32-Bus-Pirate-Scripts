@@ -25,8 +25,12 @@ class BusPirate:
         """
         ports = serial.tools.list_ports.comports()
         for port in ports:
-            is_windows_port = True if re.match("[COM+\d]", port.device) is not None else False
-            if "usb" in port.device.lower() or "tty" in port.device.lower() or is_windows_port:
+            is_windows_port = bool(re.match(r"[COM+\d]", port.device))
+            if (
+                "usb" in port.device.lower()
+                or "tty" in port.device.lower()
+                or is_windows_port
+            ):
                 try:
                     ser = serial.Serial(port.device, baudrate=baudrate, timeout=timeout)
                     ser.write(b"\n")
