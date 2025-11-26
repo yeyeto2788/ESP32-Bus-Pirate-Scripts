@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import logging
 import re
 import time
 
 import serial
 import serial.tools.list_ports
 
+logger = logging.getLogger(__name__)
 
 class BusPirate:
     """
@@ -23,6 +25,7 @@ class BusPirate:
         """
         Try to automatically detect and connect to the Bus Pirate.
         """
+        logger.debug("Attempting to auto-connect to Bus Pirate.")
         ports = serial.tools.list_ports.comports()
         for port in ports:
             is_windows_port = bool(re.match(r"[COM+\d]", port.device))
@@ -36,11 +39,12 @@ class BusPirate:
                     ser.write(b"\n")
                     response = ser.readline()
                     if response:
+                        logger.debug(f"Connected to Bus Pirate on {port.device}.")
                         ser.close()
                         return cls(port.device, baudrate, timeout)
                 except Exception as exec_error:
-                    print(exec_error)
-                    pass
+                    msg = f"An error occurred while trying to connect to Bus Pirate {exec_error}"
+                    logger.error(msg)
 
         msg = "No ESP232 Bus Pirate found."
         raise RuntimeError(msg)
@@ -50,6 +54,7 @@ class BusPirate:
         Wake up the Bus Pirate and clear any residual data in the buffer.
         - wake_attempts: number of newline attempts to wake the Bus Pirate
         """
+        logger.debug("Starting Bus Pirate connection.")
         self.flush()
 
         # In case the Bus Pirate is in a mode/shell
@@ -70,6 +75,7 @@ class BusPirate:
         Change the Bus Pirate mode.
         - mode string: "I2C", "SPI", "UART", etc.
         """
+        logger.debug(f"Changing Bus Pirate mode to {mode}.")
         self.send("m " + mode.lower())
         self.send("\n" * 10)  # select the default configuration
         self.wait()
@@ -79,6 +85,7 @@ class BusPirate:
         """
         Clear the input and output buffers.
         """
+        logger.debug("Flushing serial buffers.")
         self.serial.reset_input_buffer()
         self.serial.reset_output_buffer()
 
@@ -93,6 +100,7 @@ class BusPirate:
         Wait for a period to allow the Bus Pirate to process commands.
         - delay: time in seconds to wait
         """
+        logger.debug(f"Waiting for {delay} seconds.")
         time.sleep(delay)
 
     def send(self, data: str):
@@ -102,6 +110,7 @@ class BusPirate:
         """
         if not data.endswith("\n"):
             data += "\n"
+        logger.debug(f"Sending data: {data.strip()}")
         self.serial.write(data.encode("utf-8"))
 
     def receive(self, skip: int = 1, timeout: float = 0.5) -> list[str]:
@@ -111,6 +120,7 @@ class BusPirate:
         - timeout: stop reading if no data is received for `timeout` seconds
         """
         self.clear_echoes(skip)
+        logger.debug(f"Receiving data with timeout={timeout}s after skipping {skip} lines.")
 
         result = []
         last_data_time = time.time()
@@ -123,6 +133,8 @@ class BusPirate:
                 last_data_time = time.time()  # reset timer
             elif time.time() - last_data_time > timeout:
                 break
+
+        logger.debug(f"Received lines: {result}")
 
         return result[0:-1] if result and result[-1].endswith(">") else result
 
@@ -194,10 +206,13 @@ class BusPirate:
         - lines: number of echoed lines to clear
         """
         for _ in range(lines):
-            self.serial.readline()
+            line = self.serial.readline()
+            logger.debug(f"Cleared echo: {line.decode()}")
 
     def stop(self):
         """
         Close the bus pirate connection.
         """
+        logger.debug("Closing Bus Pirate connection.")
         self.serial.close()
+        logger.debug("Bus Pirate connection closed.")
